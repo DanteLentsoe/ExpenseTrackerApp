@@ -6,7 +6,7 @@ import Theme from "../utils/theme";
 import { Formik } from "formik";
 import { Text, View } from "../components/Themed";
 import { useContext } from "react";
-import { Stack, FormControl, Button } from "native-base";
+import { Stack, FormControl, Button, Input } from "native-base";
 import { ExpenseContext } from "../store/ExenpenseProvider";
 export default function ExpenseAdditionScreen() {
   const expenseTX = useContext(ExpenseContext);
@@ -52,13 +52,14 @@ export default function ExpenseAdditionScreen() {
                   placeholder="Amount Expense "
                   onChangeText={handleChange("amount")}
                   onBlur={handleBlur("amount")}
+                  keyboardType="numeric"
                   value={values.amount}
                 />
               </FormControl>
 
               <Button
                 onPress={handleSubmit}
-                colorScheme="indigo"
+                color={Theme.colors.primary}
                 endIcon={<AntDesign size={24} name="plus" color={"#ffffff"} />}>
                 Add Expense
               </Button>
