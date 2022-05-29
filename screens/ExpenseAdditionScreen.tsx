@@ -8,7 +8,10 @@ import { Text, View } from "../components/Themed";
 import { useContext } from "react";
 import { Stack, FormControl, Button, Input } from "native-base";
 import { ExpenseContext } from "../store/ExenpenseProvider";
-export default function ExpenseAdditionScreen() {
+import { RootTabScreenProps } from "../types";
+export default function ExpenseAdditionScreen({
+  navigation,
+}: RootTabScreenProps<"HomeScreen">) {
   const expenseTX = useContext(ExpenseContext);
 
   return (
@@ -58,7 +61,10 @@ export default function ExpenseAdditionScreen() {
               </FormControl>
 
               <Button
-                onPress={handleSubmit}
+                onPress={() => {
+                  handleSubmit();
+                  navigation.goBack();
+                }}
                 color={Theme.colors.primary}
                 endIcon={<AntDesign size={24} name="plus" color={"#ffffff"} />}>
                 Add Expense
