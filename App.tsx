@@ -4,7 +4,7 @@ import ExpenseProvider from "./store/ExenpenseProvider";
 import useCachedResources from "./hooks/useCachedResources";
 import useColorScheme from "./hooks/useColorScheme";
 import Navigation from "./navigation";
-
+import { NativeBaseProvider } from "native-base";
 export default function App() {
   const isLoadingComplete = useCachedResources();
   const colorScheme = useColorScheme();
@@ -15,8 +15,10 @@ export default function App() {
     return (
       <SafeAreaProvider>
         <ExpenseProvider>
-          <Navigation colorScheme={colorScheme} />
-          <StatusBar />
+          <NativeBaseProvider>
+            <Navigation colorScheme={colorScheme} />
+            <StatusBar />
+          </NativeBaseProvider>
         </ExpenseProvider>
       </SafeAreaProvider>
     );
