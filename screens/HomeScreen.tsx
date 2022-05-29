@@ -2,6 +2,7 @@ import { StyleSheet } from "react-native";
 import Theme from "../utils/theme";
 import { Text, View } from "../components/Themed";
 import { RootTabScreenProps } from "../types";
+import { IExpense } from "../constants/types";
 import { ExpenseContext } from "../store/ExenpenseProvider";
 import { useContext } from "react";
 
@@ -12,10 +13,20 @@ export default function HomeScreen({
 
   const expenseInfo = expenseDataTx.expenses;
 
+  //  sum the results
+  const expenseTotal = expenseInfo.map((expense: IExpense) =>
+    Number(expense.amount)
+  );
+
+  const reducer = (accumulator: number, currentValue: number) =>
+    accumulator + currentValue;
+
   return (
     <View style={styles.container}>
       <>
-        <Text style={styles.title}>Track Expenses </Text>
+        <Text style={styles.title}>
+          Track Expenses {expenseTotal.reduce(reducer)}
+        </Text>
         {expenseInfo.map((item, index) => {
           return (
             <View>
@@ -25,7 +36,7 @@ export default function HomeScreen({
                   <Text>{item.expenseCategory}</Text>
                 </View>
                 <View style={styles.amountContainer}>
-                  <Text>{item.amount}</Text>
+                  <Text style={styles.amountText}>{item.amount}</Text>
                 </View>
               </View>
             </View>
@@ -44,6 +55,8 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     fontWeight: "bold",
+    top: 25,
+    marginBottom: 55,
   },
   separator: {
     marginVertical: 30,
@@ -64,13 +77,19 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
   },
   amountContainer: {
-    left: 250,
-    backgroundColor: "pink",
+    left: 252,
+    backgroundColor: "#7f7d7d",
     padding: 8,
     borderTopRightRadius: 40,
-    borderBottomRighttRadius: 40,
+    borderBottomRightRadius: 40,
     height: 70,
     width: 70,
-    top: -30,
+    justifyContent: "center",
+    alignItems: "center",
+    top: -26,
+  },
+
+  amountText: {
+    color: "#ffffff",
   },
 });

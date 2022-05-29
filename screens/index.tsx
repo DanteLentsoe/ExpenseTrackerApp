@@ -53,7 +53,7 @@ function RootNavigator() {
       />
       <Stack.Group screenOptions={{ presentation: "modal" }}>
         <Stack.Screen
-          name="Modal"
+          name="ExpenseAdditionScreen"
           component={ExpenseAdditionScreen}
           options={({ navigation }) => ({
             headerLeft: () => (
