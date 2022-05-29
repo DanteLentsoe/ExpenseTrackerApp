@@ -11,7 +11,7 @@ import { ColorSchemeName, Pressable } from "react-native";
 
 import Colors from "../constants/Colors";
 import useColorScheme from "../hooks/useColorScheme";
-import ModalScreen from "../screens/ModalScreen";
+import ExpenseAdditionScreen from "../screens/ExpenseAdditionScreen";
 import NotFoundScreen from "../screens/NotFoundScreen";
 import HomeScreen from "../screens/HomeScreen";
 import TabTwoScreen from "../screens/TabTwoScreen";
@@ -54,7 +54,7 @@ function RootNavigator() {
       <Stack.Group screenOptions={{ presentation: "modal" }}>
         <Stack.Screen
           name="Modal"
-          component={ModalScreen}
+          component={ExpenseAdditionScreen}
           options={({ navigation }) => ({
             headerLeft: () => (
               <Pressable
