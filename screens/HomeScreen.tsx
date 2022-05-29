@@ -4,6 +4,7 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
 } from "react-native";
+
 import { useState } from "react";
 import { Text, View } from "../components/Themed";
 import { RootTabScreenProps } from "../types";
@@ -13,7 +14,8 @@ import { useContext } from "react";
 import AddFilesSVG from "../assets/SVG/AddFilesSVG";
 import Fuse from "fuse.js";
 import SearchBar from "../components/SearchBar";
-
+import window from "../constants/Layout";
+import { ScrollView } from "native-base";
 export default function HomeScreen({
   navigation,
 }: RootTabScreenProps<"HomeScreen">) {
@@ -48,17 +50,18 @@ export default function HomeScreen({
 
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-      <View style={styles.container}>
-        <>
+      <>
+        <View style={styles.container}>
           <SearchBar searchQuery={query} setQuery={setQuery} />
-          <Text style={styles.title}>
-            Track Expenses{" "}
-            {expenseTotal.length > 0 ? expenseTotal.reduce(reducer) : "😅"}
-          </Text>
-          {expenseTotal.length > 0 ? (
-            expensesResults.map((item: IExpense, index) => {
-              return (
-                <View>
+          <ScrollView>
+            <Text style={{ ...styles.title, textAlign: "center" }}>
+              Track Expenses{" "}
+              {expenseTotal.length > 0 ? expenseTotal.reduce(reducer) : "😅"}
+            </Text>
+
+            {expenseTotal.length > 0 ? (
+              expensesResults.map((item: IExpense, index) => {
+                return (
                   <View style={styles.expenseContainer} key={index}>
                     <View style={styles.internalContainer}>
                       <Text style={styles.expenseTitle}>{item.title}</Text>
@@ -70,20 +73,20 @@ export default function HomeScreen({
                       <Text style={styles.amountText}>{item.amount}</Text>
                     </View>
                   </View>
-                </View>
-              );
-            })
-          ) : (
-            <Pressable
-              onPress={() => {
-                navigation.navigate("ExpenseAdditionScreen");
-              }}
-              style={styles.svgIllustrator}>
-              <AddFilesSVG />
-            </Pressable>
-          )}
-        </>
-      </View>
+                );
+              })
+            ) : (
+              <Pressable
+                onPress={() => {
+                  navigation.navigate("ExpenseAdditionScreen");
+                }}
+                style={styles.svgIllustrator}>
+                <AddFilesSVG />
+              </Pressable>
+            )}
+          </ScrollView>
+        </View>
+      </>
     </TouchableWithoutFeedback>
   );
 }
@@ -105,8 +108,9 @@ const styles = StyleSheet.create({
     width: "80%",
   },
   svgIllustrator: {
-    height: 230,
-    width: 220,
+    height: window.window.height <= 780 ? 230 : 300,
+    width: window.window.height <= 780 ? 220 : 320,
+    top: window.window.height <= 780 ? 12 : 70,
   },
   expenseContainer: {
     backgroundColor: "#ffffff",
