@@ -7,7 +7,7 @@ import {
 } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as React from "react";
-import { ColorSchemeName, Pressable } from "react-native";
+import { ColorSchemeName, Pressable, Text } from "react-native";
 
 import Colors from "../constants/Colors";
 import useColorScheme from "../hooks/useColorScheme";
@@ -53,9 +53,10 @@ function RootNavigator() {
       />
       <Stack.Group screenOptions={{ presentation: "modal" }}>
         <Stack.Screen
-          name="Modal"
+          name="ExpenseAdditionScreen"
           component={ExpenseAdditionScreen}
           options={({ navigation }) => ({
+            headerTitle: () => <Text></Text>,
             headerLeft: () => (
               <Pressable
                 onPress={() => navigation.navigate("HomeScreen")}
@@ -88,10 +89,10 @@ function BottomTabNavigator() {
         component={HomeScreen}
         options={({ navigation }: RootTabScreenProps<"HomeScreen">) => ({
           title: "Expense Tracker",
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          tabBarIcon: ({ color }) => <TabBarIcon name="list" color={color} />,
           headerRight: () => (
             <Pressable
-              onPress={() => navigation.navigate("Modal")}
+              onPress={() => navigation.navigate("ExpenseAdditionScreen")}
               style={({ pressed }) => ({
                 opacity: pressed ? 0.5 : 1,
               })}>
@@ -109,8 +110,10 @@ function BottomTabNavigator() {
         name="TabTwo"
         component={TabTwoScreen}
         options={{
-          title: "Tab Two",
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          title: "Expenses Analytics ",
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon name="arrows-h" color={color} />
+          ),
         }}
       />
     </BottomTab.Navigator>
