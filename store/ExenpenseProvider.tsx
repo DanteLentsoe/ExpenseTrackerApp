@@ -2,23 +2,7 @@ import React, { createContext, useState } from "react";
 import { IExpense } from "../constants/types";
 
 const intialState = {
-  expenses: [
-    {
-      title: "Expense Name",
-      expenseCategory: "Entertainment",
-      amount: 12,
-    },
-    {
-      title: " How",
-      expenseCategory: "Travel",
-      amount: 120,
-    },
-    {
-      title: " One Man",
-      expenseCategory: "Education",
-      amount: 40,
-    },
-  ],
+  expenses: [],
   addExpense: (expense: IExpense) => {},
   removeExpense: (expense: IExpense) => {},
 };
