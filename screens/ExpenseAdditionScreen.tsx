@@ -1,5 +1,11 @@
 import { StatusBar } from "expo-status-bar";
-import { Platform, StyleSheet } from "react-native";
+import {
+  Platform,
+  StyleSheet,
+  TouchableWithoutFeedback,
+  Keyboard,
+} from "react-native";
+import { AddExpenseSchema } from "../utils/validation";
 import { IExpense } from "../constants/types";
 import { AntDesign } from "@expo/vector-icons";
 import Theme from "../utils/theme";
@@ -15,66 +21,91 @@ export default function ExpenseAdditionScreen({
   const expenseTX = useContext(ExpenseContext);
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>{"Expense"}</Text>
-      <Stack space="4">
-        <Formik
-          initialValues={{ title: "", expenseCategory: "", amount: 0 }}
-          onSubmit={(values: IExpense) => {
-            console.log(values);
-            expenseTX.addExpense(values);
-          }}>
-          {({ handleChange, handleBlur, handleSubmit, values }) => (
-            <>
-              <FormControl w={280} marginBottom={3}>
-                <FormControl.Label mb="1">Expense Name</FormControl.Label>
-                <Input
-                  variant="filled"
-                  placeholder="Enter Expense Name"
-                  onChangeText={handleChange("title")}
-                  onBlur={handleBlur("title")}
-                  value={values.title}
-                />
+    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+      <View style={styles.container}>
+        <Text style={styles.title}>{"Expense"}</Text>
+        <Stack space="4">
+          <Formik
+            initialValues={{ title: "", expenseCategory: "", amount: 0 }}
+            validationSchema={AddExpenseSchema}
+            onSubmit={(values: IExpense) => {
+              console.log(values);
+              expenseTX.addExpense(values);
+            }}>
+            {({
+              handleChange,
+              handleBlur,
+              handleSubmit,
+              errors,
+              touched,
+              values,
+            }) => (
+              <>
+                <FormControl w={280} marginBottom={3}>
+                  <FormControl.Label mb="1">Expense Name</FormControl.Label>
+                  <Input
+                    variant="filled"
+                    placeholder="Enter Expense Name"
+                    onChangeText={handleChange("title")}
+                    onBlur={handleBlur("title")}
+                    value={values.title}
+                  />
+                  {errors.title && touched.title && (
+                    <Text style={styles.errorText}>{errors.title}</Text>
+                  )}
 
-                <FormControl.Label mb="1" mt={3}>
-                  Expense Type
-                </FormControl.Label>
-                <Input
-                  variant="filled"
-                  placeholder="Enter Expense Type"
-                  onChangeText={handleChange("expenseCategory")}
-                  onBlur={handleBlur("expenseCategory")}
-                  value={values.expenseCategory}
-                />
+                  <FormControl.Label mb="1" mt={3}>
+                    Expense Type
+                  </FormControl.Label>
+                  <Input
+                    variant="filled"
+                    placeholder="Enter Expense Type"
+                    onChangeText={handleChange("expenseCategory")}
+                    onBlur={handleBlur("expenseCategory")}
+                    value={values.expenseCategory}
+                  />
+                  {errors.expenseCategory && touched.expenseCategory && (
+                    <Text style={styles.errorText}>
+                      {errors.expenseCategory}
+                    </Text>
+                  )}
 
-                <FormControl.Label mb="1" mt={3}>
-                  Amount Expense
-                </FormControl.Label>
-                <Input
-                  variant="filled"
-                  placeholder="Amount Expense "
-                  onChangeText={handleChange("amount")}
-                  onBlur={handleBlur("amount")}
-                  keyboardType="numeric"
-                  value={values.amount}
-                />
-              </FormControl>
-
-              <Button
-                onPress={() => {
-                  handleSubmit();
-                  navigation.goBack();
-                }}
-                color={Theme.colors.primary}
-                endIcon={<AntDesign size={24} name="plus" color={"#ffffff"} />}>
-                Add Expense
-              </Button>
-            </>
-          )}
-        </Formik>
-      </Stack>
-      <StatusBar style={Platform.OS === "ios" ? "light" : "auto"} />
-    </View>
+                  <FormControl.Label mb="1" mt={3}>
+                    Amount Expense
+                  </FormControl.Label>
+                  <Input
+                    variant="filled"
+                    placeholder="Amount Expense "
+                    onChangeText={handleChange("amount")}
+                    onBlur={handleBlur("amount")}
+                    keyboardType="numeric"
+                    // @ts-ignore
+                    value={values.amount}
+                  />
+                  {errors.amount && touched.amount && (
+                    <Text style={styles.errorText}>{errors.amount}</Text>
+                  )}
+                </FormControl>
+                {console.log("YEst ", !errors)}
+                <Button
+                  onPress={() => {
+                    handleSubmit();
+                    errors.title === "" && navigation.goBack();
+                  }}
+                  color={Theme.colors.primary}
+                  endIcon={
+                    // @ts-ignore
+                    <AntDesign size={24} name="plus" color={"#ffffff"} />
+                  }>
+                  Add Expense
+                </Button>
+              </>
+            )}
+          </Formik>
+        </Stack>
+        <StatusBar style={Platform.OS === "ios" ? "light" : "auto"} />
+      </View>
+    </TouchableWithoutFeedback>
   );
 }
 
@@ -94,5 +125,8 @@ const styles = StyleSheet.create({
   },
   expenseContainer: {
     backgroundColor: Theme.colors.primary,
+  },
+  errorText: {
+    color: "#aa1515",
   },
 });
