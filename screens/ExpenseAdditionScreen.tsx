@@ -31,6 +31,7 @@ export default function ExpenseAdditionScreen({
             onSubmit={(values: IExpense) => {
               console.log(values);
               expenseTX.addExpense(values);
+              navigation.goBack();
             }}>
             {({
               handleChange,
@@ -86,11 +87,10 @@ export default function ExpenseAdditionScreen({
                     <Text style={styles.errorText}>{errors.amount}</Text>
                   )}
                 </FormControl>
-                {console.log("YEst ", !errors)}
+
                 <Button
                   onPress={() => {
                     handleSubmit();
-                    errors.title === "" && navigation.goBack();
                   }}
                   color={Theme.colors.primary}
                   endIcon={
