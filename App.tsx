@@ -1,4 +1,5 @@
 import { StatusBar } from "expo-status-bar";
+import { SSRProvider } from "@react-aria/ssr";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import ExpenseProvider from "./store/ExenpenseProvider";
 import useCachedResources from "./hooks/useCachedResources";
@@ -13,14 +14,16 @@ export default function App() {
     return null;
   } else {
     return (
-      <SafeAreaProvider>
-        <ExpenseProvider>
-          <NativeBaseProvider>
-            <Navigation colorScheme={colorScheme} />
-            <StatusBar />
-          </NativeBaseProvider>
-        </ExpenseProvider>
-      </SafeAreaProvider>
+      <SSRProvider>
+        <SafeAreaProvider>
+          <ExpenseProvider>
+            <NativeBaseProvider>
+              <Navigation colorScheme={colorScheme} />
+              <StatusBar />
+            </NativeBaseProvider>
+          </ExpenseProvider>
+        </SafeAreaProvider>
+      </SSRProvider>
     );
   }
 }
