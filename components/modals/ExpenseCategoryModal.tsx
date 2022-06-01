@@ -1,9 +1,10 @@
 import React, { useState, Dispatch, SetStateAction } from "react";
 import { Center, Button, Modal, FormControl, Input } from "native-base";
-
+import { IExpense } from "../../constants/types";
 interface IExpenseDetailsModal {
   setShowModal: Dispatch<SetStateAction<boolean>>;
   showModal: boolean;
+  modalData?: IExpense;
 }
 
 const ExpenseCategoryModal = ({
@@ -13,7 +14,6 @@ const ExpenseCategoryModal = ({
   return (
     // <Center>
     <>
-      <Button onPress={() => setShowModal(true)}>Button</Button>
       <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
         <Modal.Content maxWidth="400px">
           <Modal.CloseButton />

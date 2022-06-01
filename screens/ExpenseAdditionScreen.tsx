@@ -27,7 +27,12 @@ export default function ExpenseAdditionScreen({
         <Text style={styles.title}>{"Expense"}</Text>
         <Stack space="4">
           <Formik
-            initialValues={{ title: "", expenseCategory: "", amount: 0 }}
+            initialValues={{
+              title: "",
+              expenseCategory: "",
+              amount: 0,
+              date: "",
+            }}
             validationSchema={AddExpenseSchema}
             onSubmit={(values: IExpense) => {
               console.log(values);
@@ -70,6 +75,18 @@ export default function ExpenseAdditionScreen({
                     <Text style={styles.errorText}>
                       {errors.expenseCategory}
                     </Text>
+                  )}
+
+                  <FormControl.Label mb="1">Expense Date </FormControl.Label>
+                  <Input
+                    variant="filled"
+                    placeholder="Expense Date"
+                    onChangeText={handleChange("date")}
+                    onBlur={handleBlur("date")}
+                    value={values.date}
+                  />
+                  {errors.date && touched.date && (
+                    <Text style={styles.errorText}>{errors.date}</Text>
                   )}
 
                   <FormControl.Label mb="1" mt={3}>
