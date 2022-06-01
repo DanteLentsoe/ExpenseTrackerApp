@@ -15,6 +15,7 @@ import { useContext } from "react";
 import { Stack, FormControl, Button, Input } from "native-base";
 import { ExpenseContext } from "../store/ExenpenseProvider";
 import { RootTabScreenProps } from "../types";
+
 export default function ExpenseAdditionScreen({
   navigation,
 }: RootTabScreenProps<"HomeScreen">) {
