@@ -1,5 +1,6 @@
 export interface IExpense {
   title: string;
   expenseCategory: string;
-  amount: number;
+  amount: number | string;
+  date: string;
 }

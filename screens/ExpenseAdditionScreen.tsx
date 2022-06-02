@@ -15,6 +15,7 @@ import { useContext } from "react";
 import { Stack, FormControl, Button, Input } from "native-base";
 import { ExpenseContext } from "../store/ExenpenseProvider";
 import { RootTabScreenProps } from "../types";
+
 export default function ExpenseAdditionScreen({
   navigation,
 }: RootTabScreenProps<"HomeScreen">) {
@@ -26,11 +27,17 @@ export default function ExpenseAdditionScreen({
         <Text style={styles.title}>{"Expense"}</Text>
         <Stack space="4">
           <Formik
-            initialValues={{ title: "", expenseCategory: "", amount: 0 }}
+            initialValues={{
+              title: "",
+              expenseCategory: "",
+              amount: 0,
+              date: "",
+            }}
             validationSchema={AddExpenseSchema}
             onSubmit={(values: IExpense) => {
               console.log(values);
               expenseTX.addExpense(values);
+              navigation.goBack();
             }}>
             {({
               handleChange,
@@ -70,6 +77,18 @@ export default function ExpenseAdditionScreen({
                     </Text>
                   )}
 
+                  <FormControl.Label mb="1">Expense Date </FormControl.Label>
+                  <Input
+                    variant="filled"
+                    placeholder="Expense Date"
+                    onChangeText={handleChange("date")}
+                    onBlur={handleBlur("date")}
+                    value={values.date}
+                  />
+                  {errors.date && touched.date && (
+                    <Text style={styles.errorText}>{errors.date}</Text>
+                  )}
+
                   <FormControl.Label mb="1" mt={3}>
                     Amount Expense
                   </FormControl.Label>
@@ -86,11 +105,10 @@ export default function ExpenseAdditionScreen({
                     <Text style={styles.errorText}>{errors.amount}</Text>
                   )}
                 </FormControl>
-                {console.log("YEst ", !errors)}
+
                 <Button
                   onPress={() => {
                     handleSubmit();
-                    errors.title === "" && navigation.goBack();
                   }}
                   color={Theme.colors.primary}
                   endIcon={

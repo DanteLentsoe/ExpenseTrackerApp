@@ -4,7 +4,7 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
 } from "react-native";
-
+import ExpenseCategoryModal from "../components/modals/ExpenseCategoryModal";
 import { useState } from "react";
 import { Text, View } from "../components/Themed";
 import { RootTabScreenProps } from "../types";
@@ -16,10 +16,12 @@ import Fuse from "fuse.js";
 import SearchBar from "../components/SearchBar";
 import window from "../constants/Layout";
 import { ScrollView } from "native-base";
+import theme from "../utils/theme";
 export default function HomeScreen({
   navigation,
 }: RootTabScreenProps<"HomeScreen">) {
   const [query, setQuery] = useState<string>("");
+  const [showModal, setShowModal] = useState(false);
   const expenseDataTx = useContext(ExpenseContext);
 
   const expenseInfo = expenseDataTx.expenses;
@@ -56,13 +58,18 @@ export default function HomeScreen({
           <ScrollView>
             <Text style={{ ...styles.title, textAlign: "center" }}>
               Track Expenses{" "}
-              {expenseTotal.length > 0 ? expenseTotal.reduce(reducer) : "😅"}
+              {expenseTotal.length > 0
+                ? expenseTotal.reduce(reducer).toFixed(2)
+                : "😅"}
             </Text>
 
             {expenseTotal.length > 0 ? (
               expensesResults.map((item: IExpense, index) => {
                 return (
-                  <View style={styles.expenseContainer} key={index}>
+                  <Pressable
+                    style={styles.expenseContainer}
+                    key={index}
+                    onPress={() => setShowModal(!showModal)}>
                     <View style={styles.internalContainer}>
                       <Text style={styles.expenseTitle}>{item.title}</Text>
                       <Text style={styles.expenseType}>
@@ -72,7 +79,7 @@ export default function HomeScreen({
                     <View style={styles.amountContainer}>
                       <Text style={styles.amountText}>{item.amount}</Text>
                     </View>
-                  </View>
+                  </Pressable>
                 );
               })
             ) : (
@@ -86,6 +93,10 @@ export default function HomeScreen({
             )}
           </ScrollView>
         </View>
+        <ExpenseCategoryModal
+          showModal={showModal}
+          setShowModal={setShowModal}
+        />
       </>
     </TouchableWithoutFeedback>
   );
@@ -135,7 +146,7 @@ const styles = StyleSheet.create({
   },
   amountContainer: {
     left: 252,
-    backgroundColor: "#7f7d7d",
+    backgroundColor: theme.colors.primary,
     padding: 8,
     borderTopRightRadius: 40,
     borderBottomRightRadius: 40,
