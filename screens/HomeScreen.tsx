@@ -21,6 +21,9 @@ export default function HomeScreen({
   navigation,
 }: RootTabScreenProps<"HomeScreen">) {
   const [query, setQuery] = useState<string>("");
+  const [modalPayload, setModalPayload] = useState<IExpense | undefined>(
+    undefined
+  );
   const [showModal, setShowModal] = useState(false);
   const expenseDataTx = useContext(ExpenseContext);
 
@@ -66,20 +69,25 @@ export default function HomeScreen({
             {expenseTotal.length > 0 ? (
               expensesResults.map((item: IExpense, index) => {
                 return (
-                  <Pressable
-                    style={styles.expenseContainer}
-                    key={index}
-                    onPress={() => setShowModal(!showModal)}>
-                    <View style={styles.internalContainer}>
-                      <Text style={styles.expenseTitle}>{item.title}</Text>
-                      <Text style={styles.expenseType}>
-                        {item.expenseCategory}
-                      </Text>
-                    </View>
-                    <View style={styles.amountContainer}>
-                      <Text style={styles.amountText}>{item.amount}</Text>
-                    </View>
-                  </Pressable>
+                  <>
+                    <Pressable
+                      style={styles.expenseContainer}
+                      key={item.id}
+                      onPress={() => {
+                        setShowModal(true);
+                        setModalPayload(item);
+                      }}>
+                      <View style={styles.internalContainer}>
+                        <Text style={styles.expenseTitle}>{item.title}</Text>
+                        <Text style={styles.expenseType}>
+                          {item.expenseCategory}
+                        </Text>
+                      </View>
+                      <View style={styles.amountContainer}>
+                        <Text style={styles.amountText}>{item.amount}</Text>
+                      </View>
+                    </Pressable>
+                  </>
                 );
               })
             ) : (
@@ -96,6 +104,7 @@ export default function HomeScreen({
         <ExpenseCategoryModal
           showModal={showModal}
           setShowModal={setShowModal}
+          modalPayload={modalPayload}
         />
       </>
     </TouchableWithoutFeedback>
@@ -119,7 +128,7 @@ const styles = StyleSheet.create({
     width: "80%",
   },
   svgIllustrator: {
-    height: window.window.height <= 780 ? 230 : 300,
+    height: window.window.height <= 780 ? 230 : 400,
     width: window.window.height <= 780 ? 220 : 320,
     top: window.window.height <= 780 ? 12 : 70,
   },
