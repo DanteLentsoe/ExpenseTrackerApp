@@ -40,6 +40,8 @@
     "react-native-svg": "^12.3.0",
     "react-native-swipe-list-view": "^3.2.9",
     "react-native-web": "0.17.7",
+    "react-swipeable-views": "^0.14.0",
+    "react-swipeable-views-native": "^0.13.2",
     "yup": "^0.32.11"
   },
   "devDependencies": {

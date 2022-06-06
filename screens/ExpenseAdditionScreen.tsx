@@ -28,6 +28,7 @@ export default function ExpenseAdditionScreen({
         <Stack space="4">
           <Formik
             initialValues={{
+              id: Math.random().toFixed(5),
               title: "",
               expenseCategory: "",
               amount: 0,
@@ -127,7 +128,7 @@ export default function ExpenseAdditionScreen({
   );
 }
 
-const styles = StyleSheet.create({
+export const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
