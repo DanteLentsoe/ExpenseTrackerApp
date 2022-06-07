@@ -1,22 +1,17 @@
 import { useContext } from "react";
-import { StyleSheet, Dimensions, Button } from "react-native";
-import {
-  LineChart,
-  BarChart,
-  PieChart,
-  ProgressChart,
-  ContributionGraph,
-  StackedBarChart,
-} from "react-native-chart-kit";
+import { StyleSheet, Dimensions } from "react-native";
+import { LineChart, PieChart } from "react-native-chart-kit";
 import SwipeableViews from "react-swipeable-views-native";
 
-import EditScreenInfo from "../components/EditScreenInfo";
+import { AntDesign } from "@expo/vector-icons";
 import { Text, View } from "../components/Themed";
 import { ExpenseContext } from "../store/ExenpenseProvider";
 import theme from "../utils/theme";
 
 export default function TabTwoScreen() {
   const expenseDataTx = useContext(ExpenseContext);
+
+  const expensesDistributionList = expenseDataTx.expenses;
 
   const screenWidth = Dimensions.get("window").width;
 
@@ -31,56 +26,27 @@ export default function TabTwoScreen() {
     useShadowColorFromDataset: false, // optional
   };
 
-  const data = [
-    {
-      name: "Seoul",
-      population: 21500000,
-      color: "rgba(131, 167, 234, 1)",
-      legendFontColor: theme.colors.primary,
-      legendFontSize: 12,
-    },
-    {
-      name: "Toronto",
-      population: 2800000,
-      color: "#F00",
-      legendFontColor: theme.colors.primary,
-      legendFontSize: 12,
-    },
-    {
-      name: "Beijing",
-      population: 527612,
-      color: "red",
-      legendFontColor: theme.colors.primary,
-      legendFontSize: 12,
-    },
-    {
-      name: "New York",
-      population: 8538000,
-      color: "pink",
-      legendFontColor: theme.colors.primary,
-      legendFontSize: 12,
-    },
-    {
-      name: "Moscow",
-      population: 11920000,
-      color: "rgb(0, 0, 255)",
-      legendFontColor: theme.colors.primary,
-      legendFontSize: 12,
-    },
-  ];
-
-  console.log("Yes Man", expenseDataTx);
   return (
     <View style={styles.container}>
       <SwipeableViews style={styles.slideContainer}>
         <View style={[styles.slide]}>
-          <Text style={styles.text}>Consumption </Text>
+          <View style={styles.nameContainer}>
+            <Text style={styles.text}>Expenditure Trend </Text>
+            {/* @ts-ignore */}
+            <AntDesign
+              name="swapright"
+              size={24}
+              color="black"
+              style={{ left: 72, fontSize: 30 }}
+            />
+          </View>
+
           <LineChart
             data={{
               labels: ["January", "February", "March", "April", "May", "June"],
               datasets: [
                 {
-                  data: [20, 20, 20, 20, 20, 20],
+                  data: [123, 0, 20, 450, 27500, 20],
                 },
               ],
             }}
@@ -112,14 +78,23 @@ export default function TabTwoScreen() {
           />
         </View>
         <View style={[styles.slide]}>
-          <Text style={styles.text}>slide n°2</Text>
+          <View style={styles.nameContainer}>
+            {/* @ts-ignore */}
+            <AntDesign
+              name="swapleft"
+              size={24}
+              color="black"
+              style={{ right: 65, fontSize: 30 }}
+            />
+            <Text style={styles.text}>Expenditure Distrbution </Text>
+          </View>
 
           <PieChart
-            data={data}
+            data={expensesDistributionList}
             width={screenWidth}
             height={300}
             chartConfig={chartConfig}
-            accessor={"population"}
+            accessor={"amount"}
             backgroundColor={"transparent"}
             paddingLeft={"15"}
             center={[10, 0]}
@@ -127,43 +102,6 @@ export default function TabTwoScreen() {
           />
         </View>
       </SwipeableViews>
-
-      {/* <Text>Bezier Line Chart</Text>
-      <LineChart
-        data={{
-          labels: ["January", "February", "March", "April", "May", "June"],
-          datasets: [
-            {
-              data: [20, 20, 20, 20, 20, 20],
-            },
-          ],
-        }}
-        width={340} // from react-native
-        height={220}
-        yAxisLabel="Ave "
-        yAxisInterval={1} // optional, defaults to 1
-        chartConfig={{
-          backgroundColor: theme.colors.secondary,
-          backgroundGradientFrom: theme.colors.primary,
-          backgroundGradientTo: "#5a4f4f",
-          decimalPlaces: 2, // optional, defaults to 2dp
-          color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-          labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-          style: {
-            borderRadius: 16,
-          },
-          propsForDots: {
-            r: "6",
-            strokeWidth: "2",
-            stroke: "#555555",
-          },
-        }}
-        bezier
-        style={{
-          marginVertical: 8,
-          borderRadius: 16,
-        }}
-      /> */}
     </View>
   );
 }
@@ -192,7 +130,12 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   text: {
-    color: "#fff",
     fontSize: 16,
+    fontStyle: "italic",
+  },
+  nameContainer: {
+    top: 50,
+    marginBottom: 100,
+    flexDirection: "row",
   },
 });
