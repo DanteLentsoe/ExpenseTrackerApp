@@ -8,6 +8,7 @@ import {
 import { AddExpenseSchema } from "../utils/validation";
 import { IExpense } from "../constants/types";
 import { AntDesign } from "@expo/vector-icons";
+import Toast from "react-native-root-toast";
 import Theme from "../utils/theme";
 import { Formik } from "formik";
 import { Text, View } from "../components/Themed";
@@ -29,16 +30,82 @@ export default function ExpenseAdditionScreen({
           <Formik
             initialValues={{
               id: Math.random().toFixed(5),
-              title: "",
+              name: "",
               expenseCategory: "",
               amount: 0,
               date: "",
+              color: "#" + Math.floor(Math.random() * 16777215).toString(16),
+              legendFontColor: Theme.colors.primary,
+              legendFontSize: 12,
             }}
             validationSchema={AddExpenseSchema}
             onSubmit={(values: IExpense) => {
-              console.log(values);
-              expenseTX.addExpense(values);
-              navigation.goBack();
+              try {
+                console.log(values);
+                expenseTX.addExpense(values);
+
+                Toast.show("Expense Successfully added", {
+                  duration: Toast.durations.SHORT,
+                  position: Toast.positions.CENTER,
+                  shadow: true,
+                  animation: true,
+                  hideOnPress: true,
+                  delay: 0,
+                  textColor: Theme.colors.primary,
+                  containerStyle: {
+                    height: 60,
+                    justifyContent: "center",
+                    alignItems: "center",
+                    borderLeftWidth: 5,
+                    borderColor: "green",
+                    backgroundColor: "#ffffff",
+                  },
+                  onShow: () => {
+                    // calls on toast\`s appear animation start
+                  },
+                  onShown: () => {
+                    // calls on toast\`s appear animation end.
+                  },
+                  onHide: () => {
+                    // calls on toast\`s hide animation start.
+                  },
+                  onHidden: () => {
+                    // calls on toast\`s hide animation end.
+                  },
+                });
+
+                navigation.goBack();
+              } catch (error) {
+                console.log("ERR ", error);
+                Toast.show("Error: Expense Not Created", {
+                  duration: Toast.durations.SHORT,
+                  position: Toast.positions.CENTER,
+                  shadow: true,
+                  animation: true,
+                  hideOnPress: true,
+                  delay: 0,
+                  textColor: Theme.colors.primary,
+                  containerStyle: {
+                    height: 60,
+                    justifyContent: "center",
+                    alignItems: "center",
+                    borderLeftWidth: 5,
+                    backgroundColor: "#ac2121",
+                  },
+                  onShow: () => {
+                    // calls on toast\`s appear animation start
+                  },
+                  onShown: () => {
+                    // calls on toast\`s appear animation end.
+                  },
+                  onHide: () => {
+                    // calls on toast\`s hide animation start.
+                  },
+                  onHidden: () => {
+                    // calls on toast\`s hide animation end.
+                  },
+                });
+              }
             }}>
             {({
               handleChange,
@@ -54,12 +121,12 @@ export default function ExpenseAdditionScreen({
                   <Input
                     variant="filled"
                     placeholder="Enter Expense Name"
-                    onChangeText={handleChange("title")}
-                    onBlur={handleBlur("title")}
-                    value={values.title}
+                    onChangeText={handleChange("name")}
+                    onBlur={handleBlur("name")}
+                    value={values.name}
                   />
-                  {errors.title && touched.title && (
-                    <Text style={styles.errorText}>{errors.title}</Text>
+                  {errors.name && touched.name && (
+                    <Text style={styles.errorText}>{errors.name}</Text>
                   )}
 
                   <FormControl.Label mb="1" mt={3}>
@@ -67,6 +134,7 @@ export default function ExpenseAdditionScreen({
                   </FormControl.Label>
                   <Input
                     variant="filled"
+                    dataDetectorTypes="phoneNumber"
                     placeholder="Enter Expense Type"
                     onChangeText={handleChange("expenseCategory")}
                     onBlur={handleBlur("expenseCategory")}
@@ -98,9 +166,9 @@ export default function ExpenseAdditionScreen({
                     placeholder="Amount Expense "
                     onChangeText={handleChange("amount")}
                     onBlur={handleBlur("amount")}
-                    keyboardType="numeric"
-                    // @ts-ignore
-                    value={values.amount}
+                    // keyboardType="numeric"
+                    keyboardType="number-pad"
+                    value={Number(values.amount)}
                   />
                   {errors.amount && touched.amount && (
                     <Text style={styles.errorText}>{errors.amount}</Text>
