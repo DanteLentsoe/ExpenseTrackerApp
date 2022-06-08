@@ -2,7 +2,7 @@ import React, { createContext, useState } from "react";
 import { IExpense } from "../constants/types";
 
 const intialState = {
-  expenses: [],
+  expenses: [] as IExpense[],
   addExpense: (expense: IExpense) => {},
   removeExpense: (expense: IExpense) => {},
 };

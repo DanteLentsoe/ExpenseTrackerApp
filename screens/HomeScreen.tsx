@@ -39,7 +39,7 @@ export default function HomeScreen({
 
   const options = {
     includeScore: true,
-    keys: ["title", "expenseCategory"],
+    keys: ["name", "expenseCategory"],
   };
 
   const reverseList = [...expenseInfo].reverse();
@@ -78,7 +78,7 @@ export default function HomeScreen({
                         setModalPayload(item);
                       }}>
                       <View style={styles.internalContainer}>
-                        <Text style={styles.expenseTitle}>{item.title}</Text>
+                        <Text style={styles.expenseTitle}>{item.name}</Text>
                         <Text style={styles.expenseType}>
                           {item.expenseCategory}
                         </Text>

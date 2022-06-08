@@ -6,6 +6,7 @@ import useCachedResources from "./hooks/useCachedResources";
 import useColorScheme from "./hooks/useColorScheme";
 import Navigation from "./navigation";
 import { NativeBaseProvider } from "native-base";
+import { RootSiblingParent } from "react-native-root-siblings";
 export default function App() {
   const isLoadingComplete = useCachedResources();
   const colorScheme = useColorScheme();
@@ -17,10 +18,12 @@ export default function App() {
       <SSRProvider>
         <SafeAreaProvider>
           <ExpenseProvider>
-            <NativeBaseProvider>
-              <Navigation colorScheme={colorScheme} />
-              <StatusBar />
-            </NativeBaseProvider>
+            <RootSiblingParent>
+              <NativeBaseProvider>
+                <Navigation colorScheme={colorScheme} />
+                <StatusBar />
+              </NativeBaseProvider>
+            </RootSiblingParent>
           </ExpenseProvider>
         </SafeAreaProvider>
       </SSRProvider>

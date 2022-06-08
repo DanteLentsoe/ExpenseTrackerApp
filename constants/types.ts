@@ -1,7 +1,10 @@
 export interface IExpense {
   id?: string;
-  title: string;
+  name: string;
   expenseCategory: string;
-  amount: number | string;
-  date: string;
+  amount: number;
+  date?: string;
+  color: string;
+  legendFontColor: string;
+  legendFontSize: number;
 }

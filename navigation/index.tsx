@@ -14,7 +14,7 @@ import useColorScheme from "../hooks/useColorScheme";
 import ExpenseAdditionScreen from "../screens/ExpenseAdditionScreen";
 import NotFoundScreen from "../screens/NotFoundScreen";
 import HomeScreen from "../screens/HomeScreen";
-import TabTwoScreen from "../screens/TabTwoScreen";
+import ExpenseAnalytics from "../screens/ExpenseAnalytics";
 import {
   RootStackParamList,
   RootTabParamList,
@@ -108,7 +108,7 @@ function BottomTabNavigator() {
       />
       <BottomTab.Screen
         name="TabTwo"
-        component={TabTwoScreen}
+        component={ExpenseAnalytics}
         options={{
           title: "Expenses Analytics ",
           tabBarIcon: ({ color }) => (
