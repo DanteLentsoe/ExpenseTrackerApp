@@ -8,7 +8,7 @@ import { Text, View } from "../components/Themed";
 import { ExpenseContext } from "../store/ExenpenseProvider";
 import theme from "../utils/theme";
 
-export default function TabTwoScreen() {
+export default function ExpenseAnalytics() {
   const expenseDataTx = useContext(ExpenseContext);
 
   const expensesDistributionList = expenseDataTx.expenses;

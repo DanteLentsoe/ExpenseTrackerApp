@@ -203,6 +203,7 @@ export default function ExpenseAdditionScreen({
                         const input = Number(value);
                         setFieldValue("amount", input);
                       }}
+                      // @ts-ignore
                       value={values.amount}
                     />
                     {errors.amount && touched.amount && (
