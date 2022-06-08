@@ -4,6 +4,7 @@ import {
   StyleSheet,
   TouchableWithoutFeedback,
   Keyboard,
+  TextInput,
 } from "react-native";
 import DatePicker from "react-native-datepicker";
 import { AddExpenseSchema } from "../utils/validation";
@@ -14,7 +15,7 @@ import Theme from "../utils/theme";
 import { Formik } from "formik";
 import { Text, View } from "../components/Themed";
 import { useContext, useState } from "react";
-import { Stack, FormControl, Button, Input } from "native-base";
+import { Stack, FormControl, Button } from "native-base";
 import { ExpenseContext } from "../store/ExenpenseProvider";
 import { RootTabScreenProps } from "../types";
 
@@ -33,7 +34,7 @@ export default function ExpenseAdditionScreen({
               id: Math.random().toFixed(5),
               name: "",
               expenseCategory: "",
-              amount: undefined,
+              amount: 12,
               date: "",
               color: "#" + Math.floor(Math.random() * 16777215).toString(16),
               legendFontColor: Theme.colors.primary,
@@ -117,29 +118,35 @@ export default function ExpenseAdditionScreen({
               values,
             }) => (
               <>
-                <FormControl w={280} marginBottom={3}>
-                  <FormControl.Label mb="1">Expense Name</FormControl.Label>
-                  <Input
-                    variant="filled"
+                <FormControl
+                  w={380}
+                  marginTop={10}
+                  marginBottom={3}
+                  alignItems={"center"}>
+                  <FormControl.Label mb="1" right={115}>
+                    Expense Name
+                  </FormControl.Label>
+                  <TextInput
                     placeholder="Enter Expense Name"
                     onChangeText={handleChange("name")}
                     onBlur={handleBlur("name")}
                     value={values.name}
+                    style={styles.inputStyles}
                   />
                   {errors.name && touched.name && (
                     <Text style={styles.errorText}>{errors.name}</Text>
                   )}
 
-                  <FormControl.Label mb="1" mt={3}>
+                  <FormControl.Label mb="1" mt={3} right={115}>
                     Expense Type
                   </FormControl.Label>
-                  <Input
-                    variant="filled"
+                  <TextInput
                     dataDetectorTypes="phoneNumber"
                     placeholder="Enter Expense Type"
                     onChangeText={handleChange("expenseCategory")}
                     onBlur={handleBlur("expenseCategory")}
                     value={values.expenseCategory}
+                    style={styles.inputStyles}
                   />
                   {errors.expenseCategory && touched.expenseCategory && (
                     <Text style={styles.errorText}>
@@ -147,9 +154,11 @@ export default function ExpenseAdditionScreen({
                     </Text>
                   )}
 
-                  <FormControl.Label mb="1">Expense Date </FormControl.Label>
+                  <FormControl.Label mb="-15" mt={5} right={115}>
+                    Expense Date{" "}
+                  </FormControl.Label>
                   <DatePicker
-                    style={styles.datePickerStyle}
+                    style={{ ...styles.datePickerStyle, ...styles.inputStyles }}
                     date={values.date} //initial date from state
                     mode="date" //The enum of date, datetime and time
                     placeholder="select date"
@@ -161,14 +170,14 @@ export default function ExpenseAdditionScreen({
                     value={values.date}
                     customStyles={{
                       dateIcon: {
-                        //display: 'none',
                         position: "absolute",
-                        left: 0,
+                        right: 0,
                         top: 4,
-                        marginLeft: 0,
+                        marginRight: 0,
                       },
                       dateInput: {
-                        marginLeft: 36,
+                        marginLeft: -220,
+                        borderWidth: 0,
                       },
                     }}
                     // onChangeText={ }
@@ -186,13 +195,13 @@ export default function ExpenseAdditionScreen({
                     <Text style={styles.errorText}>{errors.date}</Text>
                   )}
 
-                  <FormControl.Label mb="1" mt={3}>
+                  <FormControl.Label mt={3} right={105}>
                     Amount Expense
                   </FormControl.Label>
-                  <Input
-                    variant="filled"
+                  <TextInput
                     placeholder="Amount Expense "
                     onBlur={handleBlur("amount")}
+                    style={styles.inputStyles}
                     keyboardType="numeric"
                     onChangeText={handleChange("amount")}
                     value={values.amount as number}
@@ -206,6 +215,7 @@ export default function ExpenseAdditionScreen({
                   onPress={() => {
                     handleSubmit();
                   }}
+                  style={{ ...styles.button }}
                   color={Theme.colors.primary}
                   endIcon={
                     // @ts-ignore
@@ -246,5 +256,39 @@ export const styles = StyleSheet.create({
   datePickerStyle: {
     width: 200,
     marginTop: 20,
+  },
+  inputStyles: {
+    elevation: 4,
+    paddingHorizontal: 24,
+    overflow: Platform.OS === "android" ? "hidden" : "visible",
+    shadowColor: "#D0D4D9",
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 1,
+    shadowRadius: 2,
+    width: 333,
+    height: 50,
+    backgroundColor: "#ffffff",
+    borderColor: "#d0d4d9",
+    borderWidth: 1,
+    borderRadius: 12,
+  },
+  button: {
+    width: 333,
+    top: 20,
+    left: 23,
+    backgroundColor: Theme.colors.primary,
+    borderRadius: 6,
+    shadowColor: Theme.colors.primary,
+
+    elevation: 2,
+    shadowOffset: {
+      height: 2,
+      width: 0,
+    },
+    shadowRadius: 6,
+    shadowOpacity: 0.26,
   },
 });
