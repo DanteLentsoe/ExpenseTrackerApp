@@ -5,6 +5,7 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
 } from "react-native";
+import DatePicker from "react-native-datepicker";
 import { AddExpenseSchema } from "../utils/validation";
 import { IExpense } from "../constants/types";
 import { AntDesign } from "@expo/vector-icons";
@@ -12,7 +13,7 @@ import Toast from "react-native-root-toast";
 import Theme from "../utils/theme";
 import { Formik } from "formik";
 import { Text, View } from "../components/Themed";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { Stack, FormControl, Button, Input } from "native-base";
 import { ExpenseContext } from "../store/ExenpenseProvider";
 import { RootTabScreenProps } from "../types";
@@ -21,7 +22,7 @@ export default function ExpenseAdditionScreen({
   navigation,
 }: RootTabScreenProps<"HomeScreen">) {
   const expenseTX = useContext(ExpenseContext);
-
+  const [date, setDate] = useState<string>("");
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <View style={styles.container}>
@@ -32,7 +33,7 @@ export default function ExpenseAdditionScreen({
               id: Math.random().toFixed(5),
               name: "",
               expenseCategory: "",
-              amount: 0,
+              amount: undefined,
               date: "",
               color: "#" + Math.floor(Math.random() * 16777215).toString(16),
               legendFontColor: Theme.colors.primary,
@@ -147,13 +148,40 @@ export default function ExpenseAdditionScreen({
                   )}
 
                   <FormControl.Label mb="1">Expense Date </FormControl.Label>
-                  <Input
+                  <DatePicker
+                    style={styles.datePickerStyle}
+                    date={values.date} //initial date from state
+                    mode="date" //The enum of date, datetime and time
+                    placeholder="select date"
+                    format="DD-MM-YYYY"
+                    maxDate={new Date()}
+                    confirmBtnText="Confirm"
+                    cancelBtnText="Cancel"
+                    onBlur={handleBlur("date")}
+                    value={values.date}
+                    customStyles={{
+                      dateIcon: {
+                        //display: 'none',
+                        position: "absolute",
+                        left: 0,
+                        top: 4,
+                        marginLeft: 0,
+                      },
+                      dateInput: {
+                        marginLeft: 36,
+                      },
+                    }}
+                    // onChangeText={ }
+                    onDateChange={handleChange("date")}
+                  />
+                  {/* <Input
                     variant="filled"
                     placeholder="Expense Date"
                     onChangeText={handleChange("date")}
                     onBlur={handleBlur("date")}
                     value={values.date}
-                  />
+                    type={"text"}
+                  /> */}
                   {errors.date && touched.date && (
                     <Text style={styles.errorText}>{errors.date}</Text>
                   )}
@@ -164,11 +192,10 @@ export default function ExpenseAdditionScreen({
                   <Input
                     variant="filled"
                     placeholder="Amount Expense "
-                    onChangeText={handleChange("amount")}
                     onBlur={handleBlur("amount")}
-                    // keyboardType="numeric"
-                    keyboardType="number-pad"
-                    value={Number(values.amount)}
+                    keyboardType="numeric"
+                    onChangeText={handleChange("amount")}
+                    value={values.amount as number}
                   />
                   {errors.amount && touched.amount && (
                     <Text style={styles.errorText}>{errors.amount}</Text>
@@ -215,5 +242,9 @@ export const styles = StyleSheet.create({
   },
   errorText: {
     color: "#aa1515",
+  },
+  datePickerStyle: {
+    width: 200,
+    marginTop: 20,
   },
 });
