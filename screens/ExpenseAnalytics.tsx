@@ -2,7 +2,8 @@ import { useContext } from "react";
 import { StyleSheet, Dimensions } from "react-native";
 import { LineChart, PieChart } from "react-native-chart-kit";
 import SwipeableViews from "react-swipeable-views-native";
-
+import ExpenseAnalyticsSVG from "../assets/SVG/ExpenseEmpty";
+import ExpenseEmptyOne from "../assets/SVG/ExpenseEmptyOne";
 import { AntDesign } from "@expo/vector-icons";
 import { Text, View } from "../components/Themed";
 import { ExpenseContext } from "../store/ExenpenseProvider";
@@ -12,6 +13,29 @@ export default function ExpenseAnalytics() {
   const expenseDataTx = useContext(ExpenseContext);
 
   const expensesDistributionList = expenseDataTx.expenses;
+
+  const dataNumCollection = expensesDistributionList.map((item) => item.amount);
+
+  const addMonthlyExpenses = () => {
+    expensesDistributionList.map((item) => {
+      const months = [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December",
+      ];
+
+      return item;
+    });
+  };
 
   const screenWidth = Dimensions.get("window").width;
 
@@ -40,42 +64,65 @@ export default function ExpenseAnalytics() {
               style={{ left: 72, fontSize: 30 }}
             />
           </View>
-
-          <LineChart
-            data={{
-              labels: ["January", "February", "March", "April", "May", "June"],
-              datasets: [
-                {
-                  data: [123, 0, 20, 450, 27500, 20],
-                },
-              ],
-            }}
-            width={340} // from react-native
-            height={220}
-            yAxisLabel="Ave "
-            yAxisInterval={1} // optional, defaults to 1
-            chartConfig={{
-              backgroundColor: theme.colors.secondary,
-              backgroundGradientFrom: theme.colors.primary,
-              backgroundGradientTo: "#5a4f4f",
-              decimalPlaces: 2, // optional, defaults to 2dp
-              color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-              labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-              style: {
-                borderRadius: 16,
-              },
-              propsForDots: {
-                r: "6",
-                strokeWidth: "2",
-                stroke: "#555555",
-              },
-            }}
-            bezier
-            style={{
-              marginVertical: 8,
-              borderRadius: 16,
-            }}
-          />
+          {expensesDistributionList.length > 0 ? (
+            <>
+              <LineChart
+                data={{
+                  labels: [
+                    "Jan",
+                    "Feb",
+                    "Mar",
+                    "Apr",
+                    "May",
+                    "Jun",
+                    "Jul",
+                    "Aug",
+                    "Sep",
+                    "Oct",
+                    "Nov",
+                    "Dec",
+                  ],
+                  datasets: [
+                    {
+                      data: dataNumCollection,
+                    },
+                  ],
+                }}
+                width={355} // from react-native
+                height={220}
+                yAxisLabel=""
+                yAxisInterval={1} // optional, defaults to 1
+                chartConfig={{
+                  backgroundColor: theme.colors.secondary,
+                  backgroundGradientFrom: theme.colors.primary,
+                  backgroundGradientTo: "#5a4f4f",
+                  decimalPlaces: 2, // optional, defaults to 2dp
+                  color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+                  labelColor: (opacity = 1) =>
+                    `rgba(255, 255, 255, ${opacity})`,
+                  style: {
+                    borderRadius: 16,
+                  },
+                  propsForDots: {
+                    r: "6",
+                    strokeWidth: "2",
+                    stroke: "#555555",
+                  },
+                }}
+                bezier
+                style={{
+                  marginVertical: 8,
+                  borderRadius: 16,
+                }}
+              />
+            </>
+          ) : (
+            <>
+              <View style={{ width: 350, height: 440 }}>
+                <ExpenseEmptyOne />
+              </View>
+            </>
+          )}
         </View>
         <View style={[styles.slide]}>
           <View style={styles.nameContainer}>
@@ -88,18 +135,27 @@ export default function ExpenseAnalytics() {
             />
             <Text style={styles.text}>Expenditure Distrbution </Text>
           </View>
-
-          <PieChart
-            data={expensesDistributionList}
-            width={screenWidth}
-            height={300}
-            chartConfig={chartConfig}
-            accessor={"amount"}
-            backgroundColor={"transparent"}
-            paddingLeft={"15"}
-            center={[10, 0]}
-            absolute
-          />
+          {expensesDistributionList.length > 0 ? (
+            <>
+              <PieChart
+                data={expensesDistributionList}
+                width={screenWidth}
+                height={300}
+                chartConfig={chartConfig}
+                accessor={"amount"}
+                backgroundColor={"transparent"}
+                paddingLeft={"15"}
+                center={[10, 0]}
+                absolute
+              />
+            </>
+          ) : (
+            <>
+              <View style={{ width: 350, height: 380 }}>
+                <ExpenseAnalyticsSVG />
+              </View>
+            </>
+          )}
         </View>
       </SwipeableViews>
     </View>
