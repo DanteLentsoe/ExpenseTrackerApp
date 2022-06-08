@@ -9,11 +9,11 @@ const intialState = {
 export const ExpenseContext = createContext(intialState);
 
 const ExpenseProvider = ({ children }: any) => {
-  const [favoriteMealIDS, setFavoriteMealIDS] = useState<
+  const [expenseList, setFavoriteMealIDS] = useState<
     Array<IExpense> | undefined
   >([]);
 
-  const addExpenseMeal = (expense: IExpense) => {
+  const addExpense = (expense: IExpense) => {
     setFavoriteMealIDS((previousFavoriteIDS) => [
       ...previousFavoriteIDS,
       expense,
@@ -21,13 +21,13 @@ const ExpenseProvider = ({ children }: any) => {
   };
   const removeExpense = (expense: IExpense) => {
     setFavoriteMealIDS((previousFavoriteIDS) =>
-      previousFavoriteIDS.filter((mealID: IExpense) => mealID !== expense)
+      previousFavoriteIDS.filter((id: IExpense) => id !== expense)
     );
   };
 
   const values = {
-    expenses: favoriteMealIDS,
-    addExpense: addExpenseMeal,
+    expenses: expenseList,
+    addExpense: addExpense,
     removeExpense: removeExpense,
   };
   return (
