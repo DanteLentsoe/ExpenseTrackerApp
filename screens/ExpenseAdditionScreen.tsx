@@ -14,8 +14,8 @@ import Toast from "react-native-root-toast";
 import Theme from "../utils/theme";
 import { Formik } from "formik";
 import { Text, View } from "../components/Themed";
-import { useContext, useState } from "react";
-import { Stack, FormControl, Button } from "native-base";
+import { useContext } from "react";
+import { Stack, FormControl, Button, ScrollView } from "native-base";
 import { ExpenseContext } from "../store/ExenpenseProvider";
 import { RootTabScreenProps } from "../types";
 
@@ -23,7 +23,6 @@ export default function ExpenseAdditionScreen({
   navigation,
 }: RootTabScreenProps<"HomeScreen">) {
   const expenseTX = useContext(ExpenseContext);
-  const [date, setDate] = useState<string>("");
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <View style={styles.container}>
@@ -34,7 +33,7 @@ export default function ExpenseAdditionScreen({
               id: Math.random().toFixed(5),
               name: "",
               expenseCategory: "",
-              amount: 12,
+              amount: undefined,
               date: "",
               color: "#" + Math.floor(Math.random() * 16777215).toString(16),
               legendFontColor: Theme.colors.primary,
@@ -116,113 +115,114 @@ export default function ExpenseAdditionScreen({
               errors,
               touched,
               values,
+              setFieldValue,
             }) => (
               <>
-                <FormControl
-                  w={380}
-                  marginTop={10}
-                  marginBottom={3}
-                  alignItems={"center"}>
-                  <FormControl.Label mb="1" right={115}>
-                    Expense Name
-                  </FormControl.Label>
-                  <TextInput
-                    placeholder="Enter Expense Name"
-                    onChangeText={handleChange("name")}
-                    onBlur={handleBlur("name")}
-                    value={values.name}
-                    style={styles.inputStyles}
-                  />
-                  {errors.name && touched.name && (
-                    <Text style={styles.errorText}>{errors.name}</Text>
-                  )}
+                <ScrollView>
+                  <FormControl
+                    w={380}
+                    marginTop={10}
+                    marginBottom={3}
+                    alignItems={"center"}>
+                    <FormControl.Label mb="1" right={115}>
+                      Expense Name
+                    </FormControl.Label>
+                    <TextInput
+                      placeholder="Enter Expense Name"
+                      onChangeText={handleChange("name")}
+                      onBlur={handleBlur("name")}
+                      value={values.name}
+                      style={styles.inputStyles}
+                    />
+                    {errors.name && touched.name && (
+                      <Text style={styles.errorText}>{errors.name}</Text>
+                    )}
 
-                  <FormControl.Label mb="1" mt={3} right={115}>
-                    Expense Type
-                  </FormControl.Label>
-                  <TextInput
-                    dataDetectorTypes="phoneNumber"
-                    placeholder="Enter Expense Type"
-                    onChangeText={handleChange("expenseCategory")}
-                    onBlur={handleBlur("expenseCategory")}
-                    value={values.expenseCategory}
-                    style={styles.inputStyles}
-                  />
-                  {errors.expenseCategory && touched.expenseCategory && (
-                    <Text style={styles.errorText}>
-                      {errors.expenseCategory}
-                    </Text>
-                  )}
+                    <FormControl.Label mb="1" mt={3} right={115}>
+                      Expense Type
+                    </FormControl.Label>
+                    <TextInput
+                      dataDetectorTypes="phoneNumber"
+                      placeholder="Enter Expense Type"
+                      onChangeText={handleChange("expenseCategory")}
+                      onBlur={handleBlur("expenseCategory")}
+                      value={values.expenseCategory}
+                      style={styles.inputStyles}
+                    />
+                    {errors.expenseCategory && touched.expenseCategory && (
+                      <Text style={styles.errorText}>
+                        {errors.expenseCategory}
+                      </Text>
+                    )}
 
-                  <FormControl.Label mb="-15" mt={5} right={115}>
-                    Expense Date{" "}
-                  </FormControl.Label>
-                  <DatePicker
-                    style={{ ...styles.datePickerStyle, ...styles.inputStyles }}
-                    date={values.date} //initial date from state
-                    mode="date" //The enum of date, datetime and time
-                    placeholder="select date"
-                    format="DD-MM-YYYY"
-                    maxDate={new Date()}
-                    confirmBtnText="Confirm"
-                    cancelBtnText="Cancel"
-                    onBlur={handleBlur("date")}
-                    value={values.date}
-                    customStyles={{
-                      dateIcon: {
-                        position: "absolute",
-                        right: 0,
-                        top: 4,
-                        marginRight: 0,
-                      },
-                      dateInput: {
-                        marginLeft: -220,
-                        borderWidth: 0,
-                      },
+                    <FormControl.Label mb="-15" mt={5} right={115}>
+                      Expense Date{" "}
+                    </FormControl.Label>
+                    <DatePicker
+                      style={{
+                        ...styles.datePickerStyle,
+                        ...styles.inputStyles,
+                      }}
+                      date={values.date} //initial date from state
+                      mode="date" //The enum of date, datetime and time
+                      placeholder="select date"
+                      format="YYYY-MM-DD"
+                      maxDate={new Date()}
+                      confirmBtnText="Confirm"
+                      cancelBtnText="Cancel"
+                      onBlur={handleBlur("date")}
+                      value={values.date}
+                      customStyles={{
+                        dateIcon: {
+                          position: "absolute",
+                          right: 0,
+                          top: 4,
+                          marginRight: 0,
+                        },
+                        dateInput: {
+                          marginLeft: -220,
+                          borderWidth: 0,
+                        },
+                      }}
+                      onDateChange={handleChange("date")}
+                    />
+
+                    {errors.date && touched.date && (
+                      <Text style={styles.errorText}>{errors.date}</Text>
+                    )}
+
+                    <FormControl.Label mt={3} right={105}>
+                      Amount Expense
+                    </FormControl.Label>
+                    <TextInput
+                      placeholder="Amount Expense "
+                      onBlur={handleBlur("amount")}
+                      style={styles.inputStyles}
+                      keyboardType="numeric"
+                      onChangeText={(value) => {
+                        const input = Number(value);
+                        setFieldValue("amount", input);
+                      }}
+                      value={values.amount}
+                    />
+                    {errors.amount && touched.amount && (
+                      <Text style={styles.errorText}>{errors.amount}</Text>
+                    )}
+                  </FormControl>
+
+                  <Button
+                    onPress={() => {
+                      handleSubmit();
                     }}
-                    // onChangeText={ }
-                    onDateChange={handleChange("date")}
-                  />
-                  {/* <Input
-                    variant="filled"
-                    placeholder="Expense Date"
-                    onChangeText={handleChange("date")}
-                    onBlur={handleBlur("date")}
-                    value={values.date}
-                    type={"text"}
-                  /> */}
-                  {errors.date && touched.date && (
-                    <Text style={styles.errorText}>{errors.date}</Text>
-                  )}
-
-                  <FormControl.Label mt={3} right={105}>
-                    Amount Expense
-                  </FormControl.Label>
-                  <TextInput
-                    placeholder="Amount Expense "
-                    onBlur={handleBlur("amount")}
-                    style={styles.inputStyles}
-                    keyboardType="numeric"
-                    onChangeText={handleChange("amount")}
-                    value={values.amount as number}
-                  />
-                  {errors.amount && touched.amount && (
-                    <Text style={styles.errorText}>{errors.amount}</Text>
-                  )}
-                </FormControl>
-
-                <Button
-                  onPress={() => {
-                    handleSubmit();
-                  }}
-                  style={{ ...styles.button }}
-                  color={Theme.colors.primary}
-                  endIcon={
-                    // @ts-ignore
-                    <AntDesign size={24} name="plus" color={"#ffffff"} />
-                  }>
-                  Add Expense
-                </Button>
+                    style={{ ...styles.button }}
+                    color={Theme.colors.primary}
+                    endIcon={
+                      // @ts-ignore
+                      <AntDesign size={24} name="plus" color={"#ffffff"} />
+                    }>
+                    Add Expense
+                  </Button>
+                </ScrollView>
               </>
             )}
           </Formik>
