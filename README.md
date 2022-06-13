@@ -84,13 +84,15 @@ The preferred package manager for this project is `yarn`
 - Clone the repository using SSH
 
 ```
-git clone git@github.com:Topl/Gaming-Connect.git
+git clone git@github.com:dantelentsoe/ExpenseTrackerApp.git
+
+
 ```
 
 - Navigate to the cloned repo
 
 ```
-cd Gaming-Connect
+cd ExpenseTrackerApp
 ```
 
 - Install dependencies
@@ -102,7 +104,7 @@ yarn
 - Run the server locally
 
 ```
-yarn start || ng serve
+yarn start 
 ```
 
 ## Running the tests
@@ -131,14 +133,14 @@ yarn run coverage:update
 
 ## Environments
 
-There are 2 environments each corresponding to a branch on the repository:
+There are 1 environments each corresponding to a branch on the repository:
 
-- Production - `main` branch
-- Development - `dev` branch
+- Production - `master` branch
+
 
 ## Deployment
 
-The application is deployed on [Netlify](https://Gaming-Connet-dev.netlify.app) | [Netlify](https://Gaming-Connet-prod.netlify.app)
+N/A
 
 ## Built With
 
