@@ -18,6 +18,7 @@ import { useContext } from "react";
 import { Stack, FormControl, Button, ScrollView } from "native-base";
 import { ExpenseContext } from "../store/ExenpenseProvider";
 import { RootTabScreenProps } from "../types";
+import { storeExpenseData } from "../utils/https";
 
 export default function ExpenseAdditionScreen({
   navigation,
@@ -44,7 +45,7 @@ export default function ExpenseAdditionScreen({
               try {
                 console.log(values);
                 expenseTX.addExpense(values);
-
+                storeExpenseData(values);
                 Toast.show("Expense Successfully added", {
                   duration: Toast.durations.SHORT,
                   position: Toast.positions.CENTER,

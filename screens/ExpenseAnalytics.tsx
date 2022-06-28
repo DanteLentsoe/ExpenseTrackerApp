@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { StyleSheet, Dimensions } from "react-native";
 import { LineChart, PieChart } from "react-native-chart-kit";
 import SwipeableViews from "react-swipeable-views-native";
@@ -8,34 +8,26 @@ import { AntDesign } from "@expo/vector-icons";
 import { Text, View } from "../components/Themed";
 import { ExpenseContext } from "../store/ExenpenseProvider";
 import theme from "../utils/theme";
+import { getExpenseData } from "../utils/https";
+import { IExpense } from "../constants/types";
 
 export default function ExpenseAnalytics() {
   const expenseDataTx = useContext(ExpenseContext);
+
+  const [storedExpenses, setStoredExpenses] = useState<IExpense[]>();
 
   const expensesDistributionList = expenseDataTx.expenses;
 
   const dataNumCollection = expensesDistributionList.map((item) => item.amount);
 
-  const addMonthlyExpenses = () => {
-    expensesDistributionList.map((item) => {
-      const months = [
-        "January",
-        "February",
-        "March",
-        "April",
-        "May",
-        "June",
-        "July",
-        "August",
-        "September",
-        "October",
-        "November",
-        "December",
-      ];
+  useEffect(() => {
+    const getDataFromAPI = async () => {
+      const expensesLog = await getExpenseData();
+      setStoredExpenses(expensesLog);
+    };
 
-      return item;
-    });
-  };
+    getDataFromAPI();
+  }, []);
 
   const screenWidth = Dimensions.get("window").width;
 
