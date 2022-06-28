@@ -5,7 +5,7 @@ import {
   Keyboard,
 } from "react-native";
 import ExpenseCategoryModal from "../components/modals/ExpenseCategoryModal";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Text, View } from "../components/Themed";
 import { RootTabScreenProps } from "../types";
 import { IExpense } from "../constants/types";
@@ -17,6 +17,7 @@ import SearchBar from "../components/SearchBar";
 import window from "../constants/Layout";
 import { ScrollView } from "native-base";
 import theme from "../utils/theme";
+import { getExpenseData } from "../utils/https";
 export default function HomeScreen({
   navigation,
 }: RootTabScreenProps<"HomeScreen">) {
@@ -24,10 +25,25 @@ export default function HomeScreen({
   const [modalPayload, setModalPayload] = useState<IExpense | undefined>(
     undefined
   );
+  const [storedExpenses, setStoredExpenses] = useState<
+    IExpense[] | undefined
+  >();
   const [showModal, setShowModal] = useState(false);
   const expenseDataTx = useContext(ExpenseContext);
 
   const expenseInfo = expenseDataTx.expenses;
+
+  /**** API /DATABASE  *****/
+
+  // useEffect(() => {
+  //   // const getDataFromAPI = async () => {
+  //   //   const expensesLog = await getExpenseData();
+  //   //   setStoredExpenses(expensesLog);
+  //   //   expenseDataTx.setExpenseData(expensesLog);
+  //   // };
+  //   // getDataFromAPI();
+
+  // }, []);
 
   //  sum the results
   const expenseTotal = expenseInfo.map((expense: IExpense) =>
