@@ -20,14 +20,14 @@ export default function ExpenseAnalytics() {
 
   const dataNumCollection = expensesDistributionList.map((item) => item.amount);
 
-  useEffect(() => {
-    const getDataFromAPI = async () => {
-      const expensesLog = await getExpenseData();
-      setStoredExpenses(expensesLog);
-    };
+  // useEffect(() => {
+  //   const getDataFromAPI = async () => {
+  //     const expensesLog = await getExpenseData();
+  //     setStoredExpenses(expensesLog);
+  //   };
 
-    getDataFromAPI();
-  }, []);
+  //   getDataFromAPI();
+  // }, []);
 
   const screenWidth = Dimensions.get("window").width;
 

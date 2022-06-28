@@ -33,17 +33,20 @@ export default function HomeScreen({
 
   const expenseInfo = expenseDataTx.expenses;
 
-  useEffect(() => {
-    const getDataFromAPI = async () => {
-      const expensesLog = await getExpenseData();
-      setStoredExpenses(expensesLog);
-      expenseDataTx.setExpenseData(expensesLog);
-    };
-    getDataFromAPI();
-  }, []);
+  /**** API /DATABASE  *****/
+
+  // useEffect(() => {
+  //   // const getDataFromAPI = async () => {
+  //   //   const expensesLog = await getExpenseData();
+  //   //   setStoredExpenses(expensesLog);
+  //   //   expenseDataTx.setExpenseData(expensesLog);
+  //   // };
+  //   // getDataFromAPI();
+
+  // }, []);
 
   //  sum the results
-  const expenseTotal = storedExpenses.map((expense: IExpense) =>
+  const expenseTotal = expenseInfo.map((expense: IExpense) =>
     Number(expense.amount)
   );
 
@@ -80,7 +83,7 @@ export default function HomeScreen({
             </Text>
 
             {expenseTotal.length > 0 ? (
-              storedExpenses.map((item: IExpense, index) => {
+              expensesResults.map((item: IExpense, index) => {
                 return (
                   <>
                     <Pressable
